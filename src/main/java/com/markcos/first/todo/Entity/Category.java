@@ -3,9 +3,10 @@ package com.markcos.first.todo.Entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "category")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
@@ -16,4 +17,5 @@ public class Category {
 
     @Column(name = "color")
     private String color;
+
 }
