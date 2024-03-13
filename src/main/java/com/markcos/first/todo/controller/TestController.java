@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name="testController", description = "Test API")
 public class TestController {
 
-    @RequestMapping("/api/test")
+    @GetMapping("/api/test")
     @Operation(summary = "API 테스트", description = "Swagger 테스트를 위한 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success test"),
