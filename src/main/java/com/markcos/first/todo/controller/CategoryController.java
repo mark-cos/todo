@@ -1,26 +1,25 @@
 package com.markcos.first.todo.controller;
 
-import com.markcos.first.todo.Entity.Category;
+import com.markcos.first.todo.entity.Category;
 import com.markcos.first.todo.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
-@RestController
 @Tag(name="CategoryController", description = "Category API")
+@RestController
+@RequestMapping("category")
+@RequiredArgsConstructor
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
-    @GetMapping("/categories/{name}")
+    @GetMapping("/{name}")
     @Operation(summary = "카테고리 리스트 조회", description = "카테고리 리스트를 조회하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success test"),

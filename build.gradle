@@ -25,7 +25,6 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.6.15.Final'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -40,8 +39,8 @@ dependencies {
 // flyway
 flyway {
 	url = 'jdbc:postgresql://localhost:5432/todo'
-	user = 'postgres'
-	password = '1234'
+	user = 'admin'
+	password = 'Password'
 	cleanDisabled = false
 }
 
