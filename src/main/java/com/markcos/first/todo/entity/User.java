@@ -16,7 +16,7 @@ public class User {
     private String email;
 
     @Column(name = "password")
-    private Long password;
+    private Integer password;
 
     @Column(name = "file")
     private String file;
