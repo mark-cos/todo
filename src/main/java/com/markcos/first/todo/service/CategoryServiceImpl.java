@@ -1,6 +1,6 @@
 package com.markcos.first.todo.service;
 
-import com.markcos.first.todo.entity.Category;
+import com.markcos.first.todo.entity.CategoryEntity;
 import com.markcos.first.todo.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public Optional<Category> getCategory(String name) {
+    public Optional<CategoryEntity> getCategory(String name) {
         return categoryRepository.findByName(name);
     }
 

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Table(name = "category")
 @Getter
 @Setter
-public class Category {
+public class CategoryEntity {
     @Id
     private Integer id;
 

@@ -1,6 +1,6 @@
 package com.markcos.first.todo.controller;
 
-import com.markcos.first.todo.entity.Category;
+import com.markcos.first.todo.entity.CategoryEntity;
 import com.markcos.first.todo.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,8 +25,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "200", description = "Success test"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
-    public Category getCategory(@PathVariable String name) {
-        Optional<Category> category = categoryService.getCategory(name);
+    public CategoryEntity getCategory(@PathVariable String name) {
+        Optional<CategoryEntity> category = categoryService.getCategory(name);
         return category.orElse(null);
     }
 
