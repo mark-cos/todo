@@ -2,10 +2,19 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5342/
+    url: jdbc:postgresql://localhost:5432/todo
     username: admin
     password: Password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: ture
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: public
+    generate-ddl: false
+    show-sql: true

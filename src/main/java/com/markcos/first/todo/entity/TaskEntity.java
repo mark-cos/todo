@@ -1,17 +1,22 @@
-package com.markcos.first.todo.Entity;
+package com.markcos.first.todo.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
 @Entity
-public class Task {
+@Table(name = "task")
+@Getter
+@Setter
+public class TaskEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity userEntity;
 
     @Column(name = "title")
     private String title;
@@ -20,7 +25,7 @@ public class Task {
     private String description;
 
     @Column(name = "priority")
-    private Long priority;
+    private Integer priority;
 
     @Column(name = "is_completed")
     private Boolean isCompleted;
@@ -33,5 +38,5 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryEntity categoryEntity;
 }
