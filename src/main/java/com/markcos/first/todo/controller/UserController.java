@@ -1,5 +1,6 @@
 package com.markcos.first.todo.controller;
 
+import com.markcos.first.todo.dto.LoginDto;
 import com.markcos.first.todo.dto.UserDto;
 import com.markcos.first.todo.entity.UserEntity;
 import com.markcos.first.todo.service.UserService;
@@ -31,7 +32,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
-    public UserDto getLogin(@RequestBody UserDto userDto) throws Exception {
+    public LoginDto getLogin(@RequestBody UserDto userDto) throws Exception {
         return userService.loginUser(userDto);
     }
 }
