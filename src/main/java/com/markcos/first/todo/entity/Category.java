@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Category {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @Column(name = "name")
