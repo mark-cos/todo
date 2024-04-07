@@ -12,6 +12,7 @@ import java.util.Date;
 @Setter
 public class TaskEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
@@ -39,4 +40,18 @@ public class TaskEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity categoryEntity;
+
+    public TaskEntity(Integer id, UserEntity userEntity, String title, String description, Integer priority, Boolean isCompleted, Date taskDate, Date taskTime, CategoryEntity categoryEntity) {
+        this.id = id;
+        this.userEntity = userEntity;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.isCompleted = isCompleted;
+        this.taskDate = taskDate;
+        this.taskTime = taskTime;
+        this.categoryEntity = categoryEntity;
+    }
+
+    protected TaskEntity() {}
 }

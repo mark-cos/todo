@@ -7,6 +7,8 @@ import java.util.Base64;
 public class Encryption {
     private static final String key = "markcos123456789";
 
+    private Encryption() {}
+
     public static String encrypt(String password) throws Exception {
         SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance("AES");
