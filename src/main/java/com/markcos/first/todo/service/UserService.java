@@ -1,10 +1,10 @@
 package com.markcos.first.todo.service;
 
-import com.markcos.first.todo.dto.LoginDto;
 import com.markcos.first.todo.dto.UserDto;
+import org.springframework.http.ResponseEntity;
 
 public interface UserService {
-    void registerUser(UserDto userDto) throws Exception;
+    ResponseEntity<Object> registerUser(UserDto userDto);
 
-    LoginDto loginUser(UserDto userDto) throws Exception;
+    ResponseEntity<Object> loginUser(UserDto userDto);
 }

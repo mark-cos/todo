@@ -1,72 +1,67 @@
 package com.markcos.first.todo.service;
 
-import com.markcos.first.todo.dto.UserDto;
 import com.markcos.first.todo.dto.LoginDto;
+import com.markcos.first.todo.dto.UserDto;
 import com.markcos.first.todo.entity.UserEntity;
 import com.markcos.first.todo.repository.UserRepository;
 import com.markcos.first.todo.utils.Encryption;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import com.markcos.first.todo.utils.ResponseFail;
+import com.markcos.first.todo.utils.ResponseSuccess;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
-import java.util.Date;
+import static com.markcos.first.todo.utils.TokenProvider.getAccessToken;
+import static com.markcos.first.todo.utils.TokenProvider.getRefreshToken;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
-    private static final Key ACCESS_TOKEN_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private static final Key REFRESH_TOKEN_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private static final long ACCESS_TOKEN_EXPIRATION_MS = 3600000; // 1시간
-    private static final long REFRESH_TOKEN_EXPIRATION_MS = 86400000; // 1일
-
     @Override
-    public void registerUser(UserDto userDto) throws Exception {
+    public ResponseEntity<Object> registerUser(UserDto userDto) {
         if(userDto.getEmail().isEmpty() || userDto.getPassword().isEmpty() || userDto.getName().isEmpty()) {
-            throw new IllegalArgumentException("Invalid");
+            return new ResponseEntity<>(new ResponseFail("필수 항복이 비어있습니다", 900), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        userRepository.save(toEntity(userDto));
+        try {
+            UserEntity userEntity = userRepository.save(toEntity(userDto));
+            return new ResponseEntity<>(new ResponseSuccess(userEntity.getId(), userEntity.getEmail(), "", userEntity), HttpStatus.OK);
+
+        } catch(Exception e) {
+            return new ResponseEntity<>(new ResponseFail("실패했습니다.", 900), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public LoginDto loginUser(UserDto userDto) throws Exception {
-        UserDto user = fromEntity(userRepository.findByEmailAndPassword(userDto.getEmail(), Encryption.encrypt(userDto.getPassword())));
-        String accessToken = getAccessToken(user.getEmail());
-        String refreshToken = getRefreshToken(user.getEmail());
+    public ResponseEntity<Object> loginUser(UserDto userDto) {
+        try {
+            UserDto user = fromEntity(userRepository.findByEmailAndPassword(userDto.getEmail(), Encryption.encrypt(userDto.getPassword())));
+            if(user == null) {
+                return new ResponseEntity<>(new ResponseFail("회원 정보가 없습니다", 900), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
-        return new LoginDto(
-                accessToken,
-                refreshToken,
-                user.getEmail(),
-                user.getName(),
-                user.getFont(),
-                user.getFile(),
-                user.getLanguage(),
-                user.getTheme()
-        );
-    }
+            String accessToken = getAccessToken(user.getEmail());
+            String refreshToken = getRefreshToken(user.getEmail());
 
-    public String getAccessToken(String subject){
-        return Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_MS))
-                .signWith(ACCESS_TOKEN_KEY)
-                .compact();
-    }
+            LoginDto loginInfo = new LoginDto(
+                    accessToken,
+                    refreshToken,
+                    user.getEmail(),
+                    user.getName(),
+                    user.getFont(),
+                    user.getFile(),
+                    user.getLanguage(),
+                    user.getTheme()
+            );
 
-    public static String getRefreshToken(String subject) {
-        return Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))
-                .signWith(REFRESH_TOKEN_KEY)
-                .compact();
+            return new ResponseEntity<>(new ResponseSuccess(user.getId(), user.getEmail(), "", loginInfo), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseFail("실패했습니다", 900), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     private UserEntity toEntity(UserDto userDto) throws Exception {
@@ -83,6 +78,10 @@ public class UserServiceImpl implements UserService{
     }
 
     private UserDto fromEntity(UserEntity entity) {
+        if(entity == null) {
+            return null;
+        }
+
         return new UserDto(
             entity.getId(),
             entity.getName(),
